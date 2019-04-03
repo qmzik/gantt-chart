@@ -4,15 +4,15 @@ export const daysInMonth = (month: number): number => {
     return 32 - new Date(date.getFullYear(), month, 32).getDate();
 };
 
-export const getTwoMonthsDays = (startMonth: number): Month[] => {
+export const getTwoMonthsDays = (startMonth: number, dayNow: number): Month[] => {
     const CURRENT_YEAR: number = new Date().getFullYear();
-    const now: Date = new Date(CURRENT_YEAR, startMonth);
+    const now: Date = new Date(CURRENT_YEAR, startMonth, dayNow);
     const nextMonth: Date = new Date(now.getFullYear(), now.getMonth() + 1);
     const daysInCurrentMonth: number = daysInMonth(now.getMonth());
     const daysInNextMonth: number = daysInMonth(nextMonth.getMonth());
     const months: Month[] = [];
     const firstMonth = { name: monthsList[now.getMonth()], startDate: now.getDate(), endDate: daysInCurrentMonth, days: [] };
-    for (let i = 1; i <= firstMonth.endDate; i++) {
+    for (let i = dayNow; i <= firstMonth.endDate; i++) {
         firstMonth.days.push(i);
     }
     months.push(firstMonth);
@@ -24,7 +24,7 @@ export const getTwoMonthsDays = (startMonth: number): Month[] => {
     if (now.getDate() > 1) {
         const thirdMonthDate: Date = new Date(now.getFullYear(), now.getMonth() + 2);
         const daysInThirdMonth: number = daysInMonth(thirdMonthDate.getMonth());
-        const endDate = daysInThirdMonth - now.getDate() < 0 ? daysInThirdMonth : daysInThirdMonth - now.getDate();
+        const endDate = daysInThirdMonth - now.getDate() < 0 ? daysInThirdMonth : now.getDate() - 1;
         const thirdMonth = { name: monthsList[thirdMonthDate.getMonth()], startDate: 1, endDate, days: [] };
         for (let i = 1; i <= thirdMonth.endDate; i++) {
             thirdMonth.days.push(i);

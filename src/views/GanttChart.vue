@@ -1,6 +1,7 @@
 <template>
   <div class="ganttChart">
       <Timeline></Timeline>
+      <Task title="Create gantt-chart" :dateStart="dateStart" :dateEnd="dateEnd"></Task>
   </div>
 </template>
 
@@ -8,14 +9,18 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getTwoMonthsDays, Month } from '@/utils/date';
 import Timeline from '@/components/Timeline.vue';
+import Task from '@/components/Task.vue';
 
 @Component({
-    components: { Timeline },
+    components: { Timeline, Task },
 })
 export default class GanttChart extends Vue {
     private get months(): Month[] {
         return getTwoMonthsDays(this.startTime.getMonth(), this.startTime.getDate());
     }
+
+    private readonly dateStart: Date = new Date(2019, 3, 10);
+    private readonly dateEnd: Date = new Date(2019, 3, 20);
 
     private get startTime(): Date {
         return new Date();
@@ -27,6 +32,8 @@ export default class GanttChart extends Vue {
 .ganttChart {
     max-width: 1300px;
     display: flex;
+    flex-direction: column;
+    user-select: none;
 }
 
 .ganttChart__month {

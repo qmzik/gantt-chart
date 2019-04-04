@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import GanttChart from '@/components/GanttChart.vue';
+import GanttChart from '@/views/GanttChart.vue';
 
 @Component({
     components: { GanttChart },

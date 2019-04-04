@@ -1,5 +1,6 @@
 <template>
   <div class="timeline">
+      <span class="timeline__taskTitle">Current tasks</span>
       <ul class="timeline__month" v-for="(month, index) in months" :key="index">
           <span class="month__name">{{ month.name }}</span>
           <div class="month__days">
@@ -30,6 +31,12 @@ export default class Timeline extends Vue {
     display: flex;
 }
 
+.timeline__taskTitle {
+    min-width: 150px;
+    display: block;
+    border-bottom: 1px solid black;
+}
+
 .timeline__month {
     list-style-type: none;
     display: flex;
@@ -53,7 +60,7 @@ export default class Timeline extends Vue {
 }
 
 .day {
-    width: 23px;
+    width: 20px;
     height: 20px;
     text-align: center;
 }

@@ -14,6 +14,18 @@ class ChartCommon extends VuexModule {
     public addTask(task: ITask): void {
         this.tasks.push(task);
     }
+
+    @Mutation
+    public editTask(task: ITask): void {
+        const foundedIndex = this.tasks.findIndex((item) => item.id === task.id);
+        this.tasks[foundedIndex] = task;
+    }
+
+    @Mutation
+    public deleteTask(id: number): void {
+        const foundedIndex = this.tasks.findIndex((item) => item.id === id);
+        this.tasks.splice(foundedIndex, 1);
+    }
 }
 
 export const ChartCommonModule = getModule(ChartCommon);

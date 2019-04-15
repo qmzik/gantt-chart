@@ -1,6 +1,7 @@
 export interface ITask {
+    id: number;
     title: string;
-    dateStart: Date;
-    dateEnd: Date;
+    dateStart: Date | string;
+    dateEnd: Date | string;
     executor: string;
 }

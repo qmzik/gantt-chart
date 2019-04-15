@@ -3,10 +3,7 @@
       <Timeline></Timeline>
       <Task v-for="(task, i) in taskList"
             :key="i"
-            :title="task.title"
-            :dateStart="task.dateStart"
-            :dateEnd="task.dateEnd"
-            :executor="task.executor"
+            :taskInfo="task"
       ></Task>
       <CreateTaskModal></CreateTaskModal>
   </div>

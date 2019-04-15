@@ -1,7 +1,7 @@
 <template>
     <div class="createTask">
         <div class="createTask__button" @click="toggleModal">+</div>
-        <AtModal v-model="isModalShown" title="Create task">
+        <AtModal v-model="isModalShown" title="Create task" :maskClosable="false" :showClose="false">
             <label class="createTask__label">
                 <span class="label__text">Task Title</span>
                 <AtInput v-model="title" placeholder="To do gantt-chart"></AtInput>
@@ -31,6 +31,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { ChartCommonModule } from '@/store/modules/chartCommon';
 import { ITask } from '../store/modules/types';
+import { idGenerator } from '../utils/task';
 
 @Component
 export default class CreateTaskModal extends Vue {
@@ -44,8 +45,6 @@ export default class CreateTaskModal extends Vue {
         return ChartCommonModule.executors;
     }
 
-    private checkCorrect
-
     private handleConfirm(): void {
         if (!Boolean(this.title) || !Boolean(this.dateStart) || !Boolean(this.dateEnd) || !Boolean(this.executor)) {
             this.$Notify({
@@ -58,10 +57,11 @@ export default class CreateTaskModal extends Vue {
         }
 
         const task: ITask = {
-                title: this.title,
-                dateStart: new Date(this.dateStart),
-                dateEnd: new Date(this.dateEnd),
-                executor: this.executor,
+            id: idGenerator.next().value,
+            title: this.title,
+            dateStart: new Date(this.dateStart),
+            dateEnd: new Date(this.dateEnd),
+            executor: this.executor,
         };
 
         if (task.dateStart >= task.dateEnd) {

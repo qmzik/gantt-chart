@@ -14,6 +14,7 @@ export default class Task extends Vue {
     @Prop() private title!: string;
     @Prop() private dateStart!: Date;
     @Prop() private dateEnd!: Date;
+    @Prop() private executor!: string;
 
     private get width(): string {
         if (new Date() > this.dateStart) {
@@ -38,6 +39,7 @@ export default class Task extends Vue {
     background-color: inherit;
     width: 100%;
     border-bottom: 1px solid black;
+    border-right: 1px solid black;
     display: flex;
 }
 

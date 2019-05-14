@@ -93,18 +93,18 @@ export default class Task extends Vue {
     }
 
     private get width(): string {
-        if (new Date() > this.task.dateStart) {
-            return `${calculateDaysCount(new Date(), new Date(this.task.dateEnd)) * 20}px`;
+        if (ChartCommonModule.startTime > this.task.dateStart) {
+            return `${calculateDaysCount(ChartCommonModule.startTime, new Date(this.task.dateEnd)) * 20}px`;
         }
         return `${calculateDaysCount(new Date(this.task.dateStart), new Date(this.task.dateEnd)) * 20}px`;
     }
 
     private get margin(): string {
-        if (new Date() >= this.task.dateStart) {
+        if (ChartCommonModule.startTime >= this.task.dateStart) {
             return '0px';
         }
 
-        return `${calculateDaysCount(new Date() , new Date(this.task.dateStart)) * 20}px`;
+        return `${calculateDaysCount(ChartCommonModule.startTime, new Date(this.task.dateStart)) * 20}px`;
     }
 
 }

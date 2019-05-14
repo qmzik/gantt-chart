@@ -4,7 +4,7 @@ export const calculateDaysCount = (dateStart: Date, dateEnd: Date) => {
 
 function* generateId(): IterableIterator<number> {
     let id = 0;
-    while(true) {
+    while (true) {
         yield id;
         id++;
     }

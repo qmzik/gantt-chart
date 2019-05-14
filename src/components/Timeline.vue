@@ -13,6 +13,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getTwoMonthsDays, Month } from '@/utils/date';
+import { ChartCommonModule } from '../store/modules/chartCommon';
+import { ITask } from '../store/modules/types';
 
 @Component
 export default class Timeline extends Vue {
@@ -21,7 +23,7 @@ export default class Timeline extends Vue {
     }
 
     private get startTime(): Date {
-        return new Date();
+        return ChartCommonModule.startTime;
     }
 }
 </script>

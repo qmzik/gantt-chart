@@ -34,7 +34,7 @@ export default class GanttChart extends Vue {
     }
 
     private get startTime(): Date {
-        return new Date();
+        return ChartCommonModule.startTime;
     }
 }
 </script>

@@ -1,8 +1,18 @@
+import { ITask } from '@/store/modules/types';
+
 export const dateFormat = (date: Date): string => {
     const year = date.getFullYear();
     const month = `${date.getMonth() + 1 < 10 ? '0' : ''}${date.getMonth() + 1}`;
     const day = `${date.getDate() < 10 ? '0' : ''}${date.getDate()}`;
     return `${year}-${month}-${day}`;
+};
+
+export const sortByDate = (task1: ITask, task2: ITask): number => {
+    if (task1.dateStart > task2.dateStart) {
+        return 1;
+    }
+
+    return -1;
 }
 
 export const daysInMonth = (month: number): number => {

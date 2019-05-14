@@ -1,6 +1,7 @@
 import { VuexModule, Module, getModule, Mutation } from 'vuex-module-decorators';
 import store from '@/store/store';
 import { ITask } from './types';
+import { sortByDate } from '@/utils/date';
 
 @Module({ name: 'chartCommon', store, dynamic: true })
 class ChartCommon extends VuexModule {
@@ -9,9 +10,18 @@ class ChartCommon extends VuexModule {
     ];
 
     public tasks: ITask[] = [];
+    public startTime: Date = new Date();
 
     @Mutation
     public addTask(task: ITask): void {
+        const taskDate = new Date(task.dateStart);
+        if (this.startTime >= taskDate) {
+            this.startTime = taskDate;
+        }
+        
+        if (this.tasks.length === 0) {
+            this.startTime = taskDate;
+        }
         this.tasks.push(task);
     }
 

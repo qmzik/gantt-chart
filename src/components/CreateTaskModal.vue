@@ -31,7 +31,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { ChartCommonModule } from '@/store/modules/chartCommon';
 import { ITask } from '../store/modules/types';
-import { idGenerator } from '../utils/task';
+import { idGenerator, isExecutorFree } from '../utils/task';
 
 @Component
 export default class CreateTaskModal extends Vue {
@@ -68,6 +68,26 @@ export default class CreateTaskModal extends Vue {
             this.$Notify({
                 title: 'Error',
                 message: 'Date start cannot be later than Date end',
+                type: 'error',
+            });
+
+            return;
+        }
+
+        if (task.dateStart < new Date()) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Date start cannot be earlier than now',
+                type: 'error',
+            });
+
+            return;
+        }
+
+        if (!isExecutorFree(task, ChartCommonModule.tasks)) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Executor is already has a task in this interval',
                 type: 'error',
             });
 

@@ -1,8 +1,8 @@
 <template>
   <div class="ganttChart">
       <Timeline></Timeline>
-      <Task v-for="(task, i) in taskList"
-            :key="i"
+      <Task v-for="task in sortedTaskList"
+            :key="task.id"
             :taskInfo="task"
       ></Task>
       <CreateTaskModal></CreateTaskModal>
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { getTwoMonthsDays, Month } from '@/utils/date';
+import { getTwoMonthsDays, Month, sortByDate } from '@/utils/date';
 import Timeline from '@/components/Timeline.vue';
 import Task from '@/components/Task.vue';
 import CreateTaskModal from '@/components/CreateTaskModal.vue';
@@ -31,6 +31,10 @@ export default class GanttChart extends Vue {
 
     private get taskList(): ITask[] {
         return ChartCommonModule.tasks;
+    }
+
+    private get sortedTaskList(): ITask[] {
+        return this.taskList.sort(sortByDate);
     }
 
     private get startTime(): Date {

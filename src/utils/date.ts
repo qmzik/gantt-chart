@@ -8,11 +8,7 @@ export const dateFormat = (date: Date): string => {
 };
 
 export const sortByDate = (task1: ITask, task2: ITask): number => {
-    if (task1.dateStart > task2.dateStart) {
-        return 1;
-    }
-
-    return -1;
+    return +new Date(task1.dateStart) - +new Date(task2.dateStart);
 }
 
 export const daysInMonth = (month: number): number => {

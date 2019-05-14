@@ -138,6 +138,9 @@ export default class Task extends Vue {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: sticky;
+    left: 0;
+    background-color: white;
 }
 
 .task__line {

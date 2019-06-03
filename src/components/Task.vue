@@ -1,8 +1,10 @@
 <template>
     <div>
         <div class="task" @click="toggleModal">
-            <span class="task__title">{{ task.title }}</span>
-            <div class="task__line" :style="{ width: width, marginLeft: margin, backgroundColor: task.color }"></div>
+            <span class="task__title">{{ title }}</span>
+            <div class="task__line" :style="{ width: width, marginLeft: margin, backgroundColor: task.color }">
+                <span class="title__popup">{{ title }}</span>
+            </div>
         </div>
         <AtModal v-model="isModalShown" title="Edit task" :maskClosable="false" :showClose="false">
             <label class="editTask__label">
@@ -42,6 +44,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { calculateDaysCount } from '@/utils/task';
 import { dateFormat } from '@/utils/date';
+import { isExecutorFree } from '../utils/task';
 import { ITask } from '../store/modules/types';
 import { ChartCommonModule } from '../store/modules/chartCommon';
 
@@ -76,6 +79,14 @@ export default class Task extends Vue {
         this.isModalShown = !this.isModalShown;
     }
 
+    private get title(): string {
+        if (this.task.title.length > 16) {
+            return `${this.task.title.slice(0, 16)}...`
+        }
+
+        return this.task.title;
+    }
+
     private get executorsList(): string[] {
         return ChartCommonModule.executors;
     }
@@ -85,9 +96,49 @@ export default class Task extends Vue {
     }
 
     private handleEdit(): void {
+        if (!Boolean(this.task.title) || !Boolean(this.task.dateStart) || !Boolean(this.task.dateEnd) || !Boolean(this.task.executor) || !Boolean(this.task.color)) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Fill all inputs',
+                type: 'error',
+            });
+
+            return;
+        }
+
         const preparedTask = this.task;
         preparedTask.dateStart = new Date(this.task.dateStart);
         preparedTask.dateEnd = new Date(this.task.dateEnd);
+
+        if (preparedTask.dateStart >= preparedTask.dateEnd) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Date start cannot be later than Date end',
+                type: 'error',
+            });
+
+            return;
+        }
+
+        if (preparedTask.dateStart < new Date()) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Date start cannot be earlier than now',
+                type: 'error',
+            });
+
+            return;
+        }
+
+        if (!isExecutorFree(preparedTask, ChartCommonModule.tasks)) {
+            this.$Notify({
+                title: 'Error',
+                message: 'Executor is already has a task in this interval',
+                type: 'error',
+            });
+
+            return;
+        }
 
         ChartCommonModule.editTask(preparedTask);
         this.toggleModal();
@@ -130,6 +181,26 @@ export default class Task extends Vue {
     border-bottom: 1px solid black;
     border-right: 1px solid black;
     display: flex;
+    cursor: pointer;
+}
+
+.title__popup {
+    position: absolute;
+    width: 100%;
+    bottom: 40px;
+    display: none;
+    z-index: 3;
+    font-size: 15px;
+    background-color: black;
+    color: aliceblue;
+    padding: 5px;
+    border-radius: 5px;
+    word-break: break-all;
+}
+
+.task__line:hover > .title__popup {
+    display: flex;
+    justify-content: center;
 }
 
 .editTask__label {
@@ -144,7 +215,7 @@ export default class Task extends Vue {
 }
 
 .task__title {
-    width: 150px;
+    min-width: 150px;
     min-height: 100%;
     border-right: 1px solid black;
     display: flex;
@@ -153,10 +224,12 @@ export default class Task extends Vue {
     position: sticky;
     left: 0;
     background-color: white;
+    z-index: 10;
 }
 
 .task__line {
     background-color: aqua;
+    position: relative;
 }
 
 .color__select {

@@ -35,8 +35,10 @@ export default class Timeline extends Vue {
 
 .timeline__taskTitle {
     min-width: 150px;
-    display: block;
-    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #99958C;
 }
 
 .timeline__month {
@@ -45,16 +47,16 @@ export default class Timeline extends Vue {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #99958C;
 }
 
 .month__name {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #99958C;
 }
 
 .timeline__month:nth-child(even) {
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+    border-left: 1px solid #99958C;
+    border-right: 1px solid #99958C;
 }
 
 .month__days {

@@ -4,4 +4,5 @@ export interface ITask {
     dateStart: Date | string;
     dateEnd: Date | string;
     executor: string;
+    color: string;
 }

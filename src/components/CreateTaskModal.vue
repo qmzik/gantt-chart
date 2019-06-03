@@ -7,6 +7,12 @@
                 <AtInput v-model="title" placeholder="To do gantt-chart"></AtInput>
             </label>
             <label class="createTask__label">
+                <span class="label__text">Color</span>
+                <AtSelect v-model="color" size="large">
+                    <AtOption class="color__select" v-for="c in colorsList" :key="c" :value="c" :style="{ backgroundColor: c }">{{ c }}</AtOption>
+                </AtSelect>
+            </label>
+            <label class="createTask__label">
                 <span class="label__text">Date Start</span>
                 <AtInput v-model="dateStart" type="date"></AtInput>
             </label>
@@ -21,6 +27,7 @@
                 </AtSelect>
             </label>
             <div slot="footer">
+                <AtButton @click="toggleModal">Cancel</AtButton>
                 <AtButton type="primary" @click="handleConfirm">Create</AtButton>
             </div>
         </AtModal>
@@ -40,13 +47,18 @@ export default class CreateTaskModal extends Vue {
     private dateStart: string = '';
     private dateEnd: string = '';
     private executor: string = '';
+    private color: string = '';
 
     private get executorsList(): string[] {
         return ChartCommonModule.executors;
     }
 
+    private get colorsList(): string[] {
+        return ChartCommonModule.colors;
+    }
+
     private handleConfirm(): void {
-        if (!Boolean(this.title) || !Boolean(this.dateStart) || !Boolean(this.dateEnd) || !Boolean(this.executor)) {
+        if (!Boolean(this.title) || !Boolean(this.dateStart) || !Boolean(this.dateEnd) || !Boolean(this.executor) || !Boolean(this.color)) {
             this.$Notify({
                 title: 'Error',
                 message: 'Fill all inputs',
@@ -62,6 +74,7 @@ export default class CreateTaskModal extends Vue {
             dateStart: new Date(this.dateStart),
             dateEnd: new Date(this.dateEnd),
             executor: this.executor,
+            color: this.color,
         };
 
         if (task.dateStart >= task.dateEnd) {
@@ -118,8 +131,8 @@ export default class CreateTaskModal extends Vue {
 
 <style scoped>
 .createTask__button {
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
+    border-bottom: 1px solid #99958C;
+    border-right: 1px solid #99958C;
     height: 40px;
     display: flex;
     align-items: center;
@@ -141,5 +154,9 @@ export default class CreateTaskModal extends Vue {
 
 .createTask:hover {
     background-color: cornsilk;
+}
+
+.color__select {
+    color: aliceblue;
 }
 </style>

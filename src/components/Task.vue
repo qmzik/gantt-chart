@@ -2,12 +2,18 @@
     <div>
         <div class="task" @click="toggleModal">
             <span class="task__title">{{ task.title }}</span>
-            <div class="task__line" :style="{ width: width, marginLeft: margin }"></div>
+            <div class="task__line" :style="{ width: width, marginLeft: margin, backgroundColor: task.color }"></div>
         </div>
         <AtModal v-model="isModalShown" title="Edit task" :maskClosable="false" :showClose="false">
             <label class="editTask__label">
                 <span class="label__text">Task Title</span>
-                <AtInput v-model="task.title" :value="task.title"></AtInput>
+                <AtInput v-model="task.title"></AtInput>
+            </label>
+            <label class="editTask__label">
+                <span class="label__text">Color</span>
+                <AtSelect v-model="task.color" size="large">
+                    <AtOption class="color__select" v-for="c in colorsList" :key="c" :value="c" :style="{ backgroundColor: c }">{{ c }}</AtOption>
+                </AtSelect>
             </label>
             <label class="editTask__label">
                 <span class="label__text">Date Start</span>
@@ -49,6 +55,7 @@ export default class Task extends Vue {
         dateStart: dateFormat(this.taskInfo.dateStart as Date),
         dateEnd: dateFormat(this.taskInfo.dateEnd as Date),
         executor: this.taskInfo.executor,
+        color: this.taskInfo.color,
     };
 
     private beforeEditTask: ITask = ChartCommonModule.tasks.find((item) => item.id === this.taskInfo.id) as ITask;
@@ -61,6 +68,7 @@ export default class Task extends Vue {
             dateStart: dateFormat(this.beforeEditTask.dateStart as Date),
             dateEnd: dateFormat(this.beforeEditTask.dateEnd as Date),
             executor: this.beforeEditTask.executor,
+            color: this.taskInfo.color,
         };
     }
 
@@ -70,6 +78,10 @@ export default class Task extends Vue {
 
     private get executorsList(): string[] {
         return ChartCommonModule.executors;
+    }
+
+    private get colorsList(): string[] {
+        return ChartCommonModule.colors;
     }
 
     private handleEdit(): void {
@@ -145,5 +157,9 @@ export default class Task extends Vue {
 
 .task__line {
     background-color: aqua;
+}
+
+.color__select {
+    color: aliceblue;
 }
 </style>

@@ -9,6 +9,8 @@ class ChartCommon extends VuexModule {
         'Никита Лебедев', 'Илья Низовцев', 'Анна Берсенёва', 'Беслан Муков', 'Кутемба Мчанга',
     ];
 
+    public readonly colors: string[] = ['#5B11C5', '#1141C5', '#11C554', '#B1C511', '#C56E11', '#C51123', '#EA7BB4', '#887BEA'];
+
     public tasks: ITask[] = [];
     public startTime: Date = new Date();
 
@@ -18,7 +20,7 @@ class ChartCommon extends VuexModule {
         if (this.startTime >= taskDate) {
             this.startTime = taskDate;
         }
-        
+
         if (this.tasks.length === 0) {
             this.startTime = taskDate;
         }
